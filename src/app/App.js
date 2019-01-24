@@ -3,7 +3,9 @@ import logo from '../logo.svg';
 import './App.scss';
 
 class App extends Component {
+  // add more task details to tasks in state
   state = {
+    taskListName: "my new list",
     tasks: [
       { name: "Turn into React components", subtasks: [{name: "be a good person"}, {name: "be a better person"}, {name: "be the best person"}] },
       { name: "Drag / drop reorder", subtasks: [{name: "be a good person"}] },
@@ -24,29 +26,66 @@ class App extends Component {
     activeTaskId: 0
   };
 
+  // create a new task
+
+  // check a task off as done, changes state and checkbox display
+
+  // right click to delete a task
+
+  // toggle "completed tasks" list
+
+  // open detail panel if not open
+
+  // close detail panel on click, if open
+
+  // edit task name in real time
+
+  // add a subtask
+
+  // two-way binds an input or text area to its property in state
+
+  // clicking a task selects it (note detail panel should display selected task)
+
+  // drag and drop to reorder tasks
+
+  // capture the task creation date / time and store for display in detail panel
+
+  // This can become a "Task" component - tasks list will flow in through parent props
   makeTaskEl = (task, i) => <li key={"task-" + i}><span className="checkbox"></span>{task.name}</li>;
 
+  // This will go into the TaskList component and will use the "Task" component
   renderTaskList = tasks => <ol className="task-list">{ tasks.map( this.makeTaskEl ) }</ol>;
 
   render() {
+
+    const {renderTaskList, state} = this;
+    const {tasks, taskListName, activeTaskId} = state;
+
     return (
       <div className="App">
+        {/* This can become a "TaskPanels component" */}
         <div className="task-panels">
+          {/* This can become a "TasklistPanel" component */}
           <div className="tasks-panel">
-            <h2>my new list</h2>
+            <h2>{taskListName}</h2>
             <div className="tasks-manager">
               <input id="task-add" placeholder="+ Add a task..."  />
-              {this.renderTaskList(this.state.tasks)}
+              {/* This can become a "TaskList" component */}
+              {renderTaskList(tasks)}
             </div>
           </div>
+          {/* this can become a "TaskDetailPanel" component" */}
           <div className="task-panel">
+            {/* determine whether inputs that save while typing should be moved to separate components */}
             <input className="task-name checkbox" value="Task name goes here" />
             <input placeholder="Set due date" />
             <input placeholder="Remind me" />
             <div className="container-subtask">
-              {this.renderTaskList(this.state.tasks[this.state.activeTaskId].subtasks)}
+              {/* This can also be a TaskList component */}
+              {renderTaskList(tasks[activeTaskId].subtasks)}
               <input className="add-subtask" placeholder="+ Add a subtask" />
             </div>
+            {/* would be nice to make a reusable auto-resize component */}
             <textarea className="add-note" placeholder="Add a note..." />
             <input placeholder="Add a file" />
           </div>
