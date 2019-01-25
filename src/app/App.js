@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
+// import logo from '../logo.svg';
 import './App.scss';
 
 class App extends Component {
@@ -7,7 +7,12 @@ class App extends Component {
   state = {
     taskListName: "my new list",
     tasks: [
-      { name: "Turn into React components", subtasks: [{name: "be a good person"}, {name: "be a better person"}, {name: "be the best person"}] },
+      { 
+        name: "Turn into React components", 
+        subtasks: [{name: "be a good person"}, {name: "be a better person"}, {name: "be the best person"}], 
+        due: "Jan. 21",
+        note: "This is a cool note yup woohoo."
+      },
       { name: "Drag / drop reorder", subtasks: [{name: "be a good person"}] },
       { name: "Add tasks via input field", subtasks: [{name: "be a good person"}] },
       { name: "Right click handling", subtasks: [{name: "be a good person"}] },
@@ -26,7 +31,17 @@ class App extends Component {
     activeTaskId: 0
   };
 
-  // create a new task
+  // add a new task
+  createTask = (e, name) => this.setState({tasks: [{name: name, subtasks: [], due: "", note: ""}].concat(this.state.tasks)});
+
+  // reroute submission
+  handleTaskSubmit = e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      // console.log(e.target.value);
+    this.createTask(e, e.target.value);
+    }
+  }
 
   // check a task off as done, changes state and checkbox display
 
@@ -58,7 +73,7 @@ class App extends Component {
 
   render() {
 
-    const {renderTaskList, state} = this;
+    const {renderTaskList, handleTaskSubmit, state} = this;
     const {tasks, taskListName, activeTaskId} = state;
 
     return (
@@ -69,7 +84,7 @@ class App extends Component {
           <div className="tasks-panel">
             <h2>{taskListName}</h2>
             <div className="tasks-manager">
-              <input id="task-add" placeholder="+ Add a task..."  />
+              <input id="task-add" onKeyPress={handleTaskSubmit} placeholder="+ Add a task..."  />
               {/* This can become a "TaskList" component */}
               {renderTaskList(tasks)}
             </div>
@@ -77,17 +92,16 @@ class App extends Component {
           {/* this can become a "TaskDetailPanel" component" */}
           <div className="task-panel">
             {/* determine whether inputs that save while typing should be moved to separate components */}
-            <input className="task-name checkbox" value="Task name goes here" />
-            <input placeholder="Set due date" />
-            <input placeholder="Remind me" />
+            {/* on these components' rerender, need to pass them their data in props and explicitly set their value with js (Not with a value attr)  */}
+            <input className="task-name checkbox" defaultValue={tasks[activeTaskId].name} />
+            <input placeholder="Set due date" defaultValue={tasks[activeTaskId].due} />
             <div className="container-subtask">
               {/* This can also be a TaskList component */}
               {renderTaskList(tasks[activeTaskId].subtasks)}
               <input className="add-subtask" placeholder="+ Add a subtask" />
             </div>
             {/* would be nice to make a reusable auto-resize component */}
-            <textarea className="add-note" placeholder="Add a note..." />
-            <input placeholder="Add a file" />
+            <textarea className="add-note" placeholder="Add a note..." value={tasks[activeTaskId].note} />
           </div>
         </div>
       </div>
