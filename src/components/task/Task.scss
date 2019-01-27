@@ -1,0 +1,15 @@
+li.task {
+  background-color: #FFF;
+  color: #f59692;
+  padding: 10px;
+  border-radius: 5px;
+  .checkbox {
+    margin-right: 10px;
+    &.incomplete:before {
+      content: '▢'
+    }
+    &.completed:before {
+      content: '☑'
+    }
+  }
+}

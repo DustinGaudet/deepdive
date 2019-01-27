@@ -1,0 +1,54 @@
+.task-panels {
+  display: grid;
+  grid-template: 1fr / 1fr 50%;
+}
+
+.tasks-panel {
+  background-color: #94c9d1;
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template: auto 1fr / 1fr;
+  h2 {
+    margin: 0;
+    padding: 10px;
+    background-color: #f59692;
+    color: white;
+    font-weight: 100;
+    font-family: "Helvetica";
+  }
+  .tasks-manager {
+    overflow-y: scroll;
+    padding: 20px;
+    display: grid;
+    grid-template: 40px auto 40px auto / 1fr;
+    row-gap: 20px;
+  }
+}
+
+.task-panel {
+  background-color: #FFF;
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template: min-content / 1fr;
+  grid-auto-rows: min-content;
+  overflow: auto;
+  // grid-auto-rows: 40px;
+  
+  .container-subtask {
+    display: grid;
+    grid-template: min-content / 1fr;
+    grid-auto-rows: min-content;
+    ol {
+      display: grid;
+      grid-template: min-content / 1fr;
+      grid-auto-rows: min-content;
+    }
+  }
+  
+  textarea {
+    resize: none;
+    overflow: hidden;
+  }
+}

@@ -1,0 +1,22 @@
+.tasks-manager input {
+  border-radius: 5px;
+  border: none;
+  background-color: #c9e2e5;
+  padding-left: 10px;
+  &::placeholder {
+    color: #02505c;
+  }
+}
+
+
+.task-panel input {
+  background-color: #FFF;
+  color: #f59692;
+  font-weight: lighter;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #f59692;
+  &::placeholder {
+    color: #f59692;
+  }
+}
