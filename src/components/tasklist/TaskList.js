@@ -3,7 +3,15 @@ import './TaskList.scss';
 import Task from '../task/Task';
 
 const TaskList = props => {
-  const makeTaskEl = (task) => <Task key={task.id} completionState={task.completed} taskId={task.id} name={task.name} />;
+  const makeTaskEl = (task) => { 
+    return (
+      <Task key={task.id} 
+            completionState={task.completed} 
+            taskId={task.id} 
+            name={task.name} 
+            handleClick={props.handleClick} />
+    );
+  }
   var tasks = props.tasks.filter(x => x.parent === props.parentId);
 
   if (props.hasOwnProperty("completed")) {

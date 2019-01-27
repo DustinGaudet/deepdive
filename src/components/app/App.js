@@ -30,6 +30,17 @@ class App extends Component {
     });
   };
 
+  // this will shuffle order of tasks until a more elegant solution is found.
+  // is also unnecessarily expensive as it filters the entire task list twice
+  // consider utilizing a functional library? Or just pertinent functions?
+  handleCheckboxClick = (e, id) => {
+    e.preventDefault();
+    const task = this.getTaskById(id)[0];
+    const updatedTask = {...task, completed: !task.completed};
+    const otherTasks = this.state.tasks.filter(x => x.id !== id);
+    this.setState({tasks: [updatedTask].concat(otherTasks)})
+  };
+
   getTaskById = id => this.state.tasks.filter(x => x.id === id);
 
   render() {
@@ -43,15 +54,15 @@ class App extends Component {
             <h2>{state.taskListName}</h2>
             <TaskListPanel>
               <NewTaskInput handleEnterPress={addTask} parentId="1" />
-              <TaskList tasks={tasks} parentId="1" completed={false} />
-              <TaskList tasks={tasks} parentId="1" completed={true} />
+              <TaskList handleClick={this.handleCheckboxClick} tasks={tasks} parentId="1" completed={false} />
+              <TaskList handleClick={this.handleCheckboxClick} tasks={tasks} parentId="1" completed={true} />
             </TaskListPanel>
           </div>
           <div className="task-panel">
             <input className="task-name checkbox" defaultValue={activeTask.name} />
             <input placeholder="Set due date" defaultValue={activeTask.due} />
             <div className="container-subtask">
-              <TaskList tasks={tasks} parentId={activeTaskId} />
+              <TaskList handleClick={this.handleCheckboxClick} tasks={tasks} parentId={activeTaskId} />
               <NewTaskInput handleEnterPress={addTask} parentId={activeTaskId} />
             </div>
             <textarea className="add-note" placeholder="Add a note..." defaultValue={activeTask.note} />
