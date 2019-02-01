@@ -5,4 +5,8 @@ ol.task-list {
   grid-auto-rows: 40px;
   row-gap: 1px;
   margin: 0;
+  &.hidden {
+    display: none;
+  }
 }
+
