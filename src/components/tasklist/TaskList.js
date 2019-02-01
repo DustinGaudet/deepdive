@@ -5,7 +5,7 @@ import Task from '../task/Task'
 const TaskList = props => {
   
   var tasks = props.tasks.filter(x => x.parent === props.parentId)
-  var hiddenClass = false
+  var hiddenClass = ''
 
   if (props.hasOwnProperty('completed')) {
     tasks = tasks.filter(x => x.completed === props.completed)
