@@ -43,10 +43,11 @@ class App extends Component {
     const {state, addTask, handleCheckboxClick} = this
     const {tasks, activeTaskId} = state
     const activeTask = this.getTaskById(state.activeTaskId)
+    const detailsOpen = state.detailsOpen ? "details-open" : "details-closed"
 
     return (
       <div className="App">
-        <div className="task-panels">
+        <div className={"task-panels " + detailsOpen}>
           <div className="tasks-panel">
             <h2>{state.taskListName}</h2>
             <TaskListPanel>

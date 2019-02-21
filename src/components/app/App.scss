@@ -1,6 +1,11 @@
 .task-panels {
   display: grid;
-  grid-template: 1fr / 1fr 50%;
+  &.details-open {
+    grid-template: 1fr / 1fr 50%;
+  }
+  &.details-closed {
+    grid-template: 1fr / 1fr 0;
+  }
 }
 
 .tasks-panel {

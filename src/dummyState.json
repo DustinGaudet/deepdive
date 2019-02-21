@@ -36,5 +36,6 @@
     { "id": 10000031, "name": "be n good person", "parent": 10000014, "completed": false }
   ],
   "activeTaskId": 10000000,
-  "hideCompletedTasks": true
+  "hideCompletedTasks": true,
+  "detailsOpen": false
 }
