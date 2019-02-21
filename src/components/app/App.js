@@ -29,10 +29,17 @@ class App extends Component {
     })
   }
 
-  // handleCheckboxClick = (e, id) => {
   handleCheckboxClick = (e, task) => {
     e.preventDefault()
     this.setState({tasks: this.state.tasks.map(x => x.id !== task.id ? x : {...task, completed: !task.completed})})
+  }
+
+  handleSingleClickTask = (task) => {
+    this.setState({activeTaskId: task.id})
+  }
+
+  handleDoubleClickTask = () => {
+    this.setState({detailsOpen: true})
   }
 
   getTaskById = id => this.state.tasks.filter(x => x.id === id)[0]
@@ -40,7 +47,7 @@ class App extends Component {
   toggleCompletedList = () => this.setState({hideCompletedTasks: !this.state.hideCompletedTasks})
 
   render() {
-    const {state, addTask, handleCheckboxClick} = this
+    const {state, addTask, handleCheckboxClick, handleSingleClickTask, handleDoubleClickTask} = this
     const {tasks, activeTaskId} = state
     const activeTask = this.getTaskById(state.activeTaskId)
     const detailsOpen = state.detailsOpen ? "details-open" : "details-closed"
@@ -52,7 +59,7 @@ class App extends Component {
             <h2>{state.taskListName}</h2>
             <TaskListPanel>
               <NewTaskInput handleEnterPress={addTask} parentId={1} />
-              <TaskList handleClick={handleCheckboxClick} tasks={tasks} parentId={1} completed={false} />
+              <TaskList handleClick={handleCheckboxClick} handleSingleClickTask={handleSingleClickTask} handleDoubleClickTask={handleDoubleClickTask} tasks={tasks} parentId={1} completed={false} />
               <button onClick={this.toggleCompletedList} >Show / Hide Completed tasks</button>
               <TaskList hidden={state.hideCompletedTasks} handleClick={handleCheckboxClick} tasks={tasks} parentId={1} completed={true} />
             </TaskListPanel>

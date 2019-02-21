@@ -2,24 +2,26 @@ import React from 'react'
 import './TaskList.scss'
 import Task from '../task/Task'
 
-const TaskList = props => {
+const TaskList = ({tasks, parentId, completed, hidden, handleClick, handleSingleClickTask, handleDoubleClickTask}) => {
   
-  var tasks = props.tasks.filter(x => x.parent === props.parentId)
+  tasks = tasks.filter(x => x.parent === parentId)
   var hiddenClass = ''
 
-  if (props.hasOwnProperty('completed')) {
-    tasks = tasks.filter(x => x.completed === props.completed)
+  if (typeof completed !== 'undefined') {
+    tasks = tasks.filter(x => x.completed === completed)
   } 
 
-  if (props.hasOwnProperty('hidden')) {
-    hiddenClass = props.hidden ? 'hidden' : ''
+  if (typeof hidden !== 'undefined') {
+    hiddenClass = hidden ? 'hidden' : ''
   }
 
   tasks = tasks.map((task) => { 
     return (
       <Task key={task.id} 
             task={task}
-            handleClick={props.handleClick} />
+            handleClick={handleClick}
+            handleSingleClickTask={handleSingleClickTask} 
+            handleDoubleClickTask={handleDoubleClickTask} />
     )
   })
   
