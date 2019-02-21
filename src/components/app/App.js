@@ -51,6 +51,8 @@ class App extends Component {
     const {tasks, activeTaskId} = state
     const activeTask = this.getTaskById(state.activeTaskId)
     const detailsOpen = state.detailsOpen ? "details-open" : "details-closed"
+    const taskCreatedCompleted = activeTask.completed ? "Completed " : "Created "
+    const createCompleteDate = activeTask.completed ? activeTask.completedDate : activeTask.createdDate
 
     return (
       <div className="App">
@@ -61,17 +63,20 @@ class App extends Component {
               <NewTaskInput handleEnterPress={addTask} parentId={1} />
               <TaskList handleClick={handleCheckboxClick} handleSingleClickTask={handleSingleClickTask} handleDoubleClickTask={handleDoubleClickTask} tasks={tasks} parentId={1} completed={false} />
               <button onClick={this.toggleCompletedList} >Show / Hide Completed tasks</button>
-              <TaskList hidden={state.hideCompletedTasks} handleClick={handleCheckboxClick} tasks={tasks} parentId={1} completed={true} />
+              <TaskList hidden={state.hideCompletedTasks} handleClick={handleCheckboxClick} handleSingleClickTask={handleSingleClickTask} handleDoubleClickTask={handleDoubleClickTask} tasks={tasks} parentId={1} completed={true} />
             </TaskListPanel>
           </div>
           <div className="task-panel">
-            <input className="task-name checkbox" defaultValue={activeTask.name} />
-            <input placeholder="Set due date" defaultValue={activeTask.due} />
-            <div className="container-subtask">
-              <TaskList handleClick={handleCheckboxClick} tasks={tasks} parentId={activeTaskId} />
-              <NewTaskInput handleEnterPress={addTask} parentId={activeTaskId} />
+            <div>
+              <input className="task-name checkbox" defaultValue={activeTask.name} />
+              <input placeholder="Set due date" defaultValue={activeTask.due} />
+              <div className="container-subtask">
+                <TaskList handleClick={handleCheckboxClick} tasks={tasks} parentId={activeTaskId} />
+                <NewTaskInput handleEnterPress={addTask} parentId={activeTaskId} />
+              </div>
+              <textarea className="add-note" placeholder="Add a note..." defaultValue={activeTask.note} />
             </div>
-            <textarea className="add-note" placeholder="Add a note..." defaultValue={activeTask.note} />
+            <p>{taskCreatedCompleted + createCompleteDate}</p>
           </div>
         </div>
       </div>
