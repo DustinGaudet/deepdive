@@ -9,7 +9,7 @@ class Task extends Component {
   handleSingleOrDoubleClick = (e) => {
 
     e.preventDefault()
-    if (e.target === e.currentTarget) {
+    if (e.target === e.currentTarget && this.props.task.parent === 1) {
       this.setState({timer: 1})
 
       console.log(this.state.timer)    
