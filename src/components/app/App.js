@@ -29,6 +29,14 @@ class App extends Component {
     })
   }
 
+  updateTask = (id, newTask) => this.setState((prevState) => ({tasks: prevState.tasks.map((x) => x.id === id ? newTask : x)}) )
+
+  updateTaskName = (e) => {
+    const id = this.state.activeTaskId
+    const oldTask = this.getTaskById(id)
+    this.updateTask(id, {...oldTask, name: e.target.value})
+  }
+
   handleCheckboxClick = (e, task) => {
     e.preventDefault()
     this.setState({tasks: this.state.tasks.map(x => x.id !== task.id ? x : {...task, completed: !task.completed})})
@@ -42,12 +50,23 @@ class App extends Component {
     this.setState({detailsOpen: true})
   }
 
+  closeTaskPanel = () => {
+    this.setState({detailsOpen: false})
+  }
+
   getTaskById = id => this.state.tasks.filter(x => x.id === id)[0]
 
   toggleCompletedList = () => this.setState({hideCompletedTasks: !this.state.hideCompletedTasks})
 
   render() {
-    const {state, addTask, handleCheckboxClick, handleSingleClickTask, handleDoubleClickTask} = this
+    const {state, 
+          addTask, 
+          handleCheckboxClick, 
+          handleSingleClickTask, 
+          handleDoubleClickTask, 
+          closeTaskPanel, 
+          updateTaskName, 
+          enterPressWrap} = this
     const {tasks, activeTaskId} = state
     const activeTask = this.getTaskById(state.activeTaskId)
     const detailsOpen = state.detailsOpen ? "details-open" : "details-closed"
@@ -61,22 +80,39 @@ class App extends Component {
             <h2>{state.taskListName}</h2>
             <TaskListPanel>
               <NewTaskInput handleEnterPress={addTask} parentId={1} />
-              <TaskList handleClick={handleCheckboxClick} handleSingleClickTask={handleSingleClickTask} handleDoubleClickTask={handleDoubleClickTask} tasks={tasks} parentId={1} completed={false} />
+              <TaskList handleClick={handleCheckboxClick} 
+                        handleSingleClickTask={handleSingleClickTask} 
+                        handleDoubleClickTask={handleDoubleClickTask} 
+                        tasks={tasks} 
+                        parentId={1} 
+                        completed={false} />
               <button onClick={this.toggleCompletedList} >Show / Hide Completed tasks</button>
-              <TaskList hidden={state.hideCompletedTasks} handleClick={handleCheckboxClick} handleSingleClickTask={handleSingleClickTask} handleDoubleClickTask={handleDoubleClickTask} tasks={tasks} parentId={1} completed={true} />
+              <TaskList hidden={state.hideCompletedTasks} 
+                        handleClick={handleCheckboxClick} 
+                        handleSingleClickTask={handleSingleClickTask} 
+                        handleDoubleClickTask={handleDoubleClickTask} 
+                        tasks={tasks} 
+                        parentId={1} 
+                        completed={true} />
             </TaskListPanel>
           </div>
           <div className="task-panel">
-            <div>
-              <input className="task-name checkbox" defaultValue={activeTask.name} />
+            <input value={activeTask.name} 
+                   onBlur={updateTaskName}
+                   onChange={updateTaskName}
+                   className="task-name checkbox" />
+            <div className="details">  
               <input placeholder="Set due date" defaultValue={activeTask.due} />
               <div className="container-subtask">
-                <TaskList handleClick={handleCheckboxClick} tasks={tasks} parentId={activeTaskId} />
-                <NewTaskInput handleEnterPress={addTask} parentId={activeTaskId} />
+                <TaskList handleClick={handleCheckboxClick} 
+                          tasks={tasks} 
+                          parentId={activeTaskId} />
+                <NewTaskInput handleEnterPress={addTask} 
+                              parentId={activeTaskId} />
               </div>
               <textarea className="add-note" placeholder="Add a note..." defaultValue={activeTask.note} />
             </div>
-            <p>{taskCreatedCompleted + createCompleteDate}</p>
+            <div><p><button onClick={closeTaskPanel}>></button> {taskCreatedCompleted + createCompleteDate}</p></div>
           </div>
         </div>
       </div>
