@@ -39,7 +39,8 @@ class App extends Component {
 
   handleCheckboxClick = (e, task) => {
     e.preventDefault()
-    this.setState({tasks: this.state.tasks.map(x => x.id !== task.id ? x : {...task, completed: !task.completed})})
+    const completedDateTime = (!task.completed) ? new Date() : ''
+    this.updateTask(task.id, {...task, completed: !task.completed, completedDateTime})
   }
 
   handleSingleClickTask = (task) => {
@@ -71,7 +72,7 @@ class App extends Component {
     const activeTask = this.getTaskById(state.activeTaskId)
     const detailsOpen = state.detailsOpen ? "details-open" : "details-closed"
     const taskCreatedCompleted = activeTask.completed ? "Completed " : "Created "
-    const createCompleteDate = activeTask.completed ? activeTask.completedDate : activeTask.createdDate
+    const createCompleteDate = activeTask.completed ? activeTask.completedDateTime : activeTask.createdDate
 
     return (
       <div className="App">
