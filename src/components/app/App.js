@@ -25,7 +25,6 @@ class App extends Component {
       const newTask = { id, name, parent, completed: false, createdDate: new Date()}
       const newTaskId = id + 1
       this.setState({newTaskId, tasks: [newTask].concat(this.state.tasks)})
-      e.target.value = ""
     })
   }
 

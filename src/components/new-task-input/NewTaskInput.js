@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './NewTaskInput.scss';
 
-const NewTaskInput = props => {
-  return (
-    <input className="task-add" 
-           placeholder="+ Add a task..." 
-           onKeyPress={(e) => props.handleEnterPress(e, e.target.value, props.parentId)} />
-  );
+class NewTaskInput extends Component {
+  state = {
+    inputText: ''
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.parentId !== prevProps.parentId) {
+      this.setState({inputText: ''})
+    }
+  }
+
+  onChange = (e) => {
+    this.setState({inputText: e.target.value})
+  }
+
+  render() { 
+    const {props} = this;
+
+    return (
+      <input className="task-add" 
+            placeholder="+ Add a task..." 
+            onKeyPress={(e) => props.handleEnterPress(e, e.target.value, props.parentId)}
+            onChange={this.onChange}
+            value={this.state.inputText} />
+    )
+  }
 }
 
 export default NewTaskInput;
