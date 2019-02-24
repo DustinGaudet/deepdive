@@ -33,10 +33,10 @@ class Task extends Component {
 
   render () {
     const {task, handleClick} = this.props
-    const completionState = this.props.task.completionState ? 'completed' : 'incomplete'
+    const completionState = this.props.task.completed ? 'completed' : 'incomplete'
     
     return (
-      <li className='task' onClick={this.handleSingleOrDoubleClick}>
+      <li className={'task ' + completionState} onClick={this.handleSingleOrDoubleClick}>
         <span className={'checkbox ' + completionState} onClick={(e) => handleClick(e, task)}></span>{task.name}
       </li>
     )
