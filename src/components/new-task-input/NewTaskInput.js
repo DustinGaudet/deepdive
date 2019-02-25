@@ -16,13 +16,17 @@ class NewTaskInput extends Component {
     this.setState({inputText: e.target.value})
   }
 
+  resetState = (e) => {
+    this.setState({inputText: ''})
+  }
+
   render() { 
     const {props} = this;
 
     return (
       <input className="task-add" 
             placeholder="+ Add a task..." 
-            onKeyPress={(e) => props.handleEnterPress(e, e.target.value, props.parentId)}
+            onKeyPress={(e) => props.handleEnterPress(e, e.target.value, props.parentId, this.resetState)}
             onChange={this.onChange}
             value={this.state.inputText} />
     )

@@ -18,7 +18,14 @@ class App extends Component {
       callback()
     }
   }
-  
+
+  // this is messy, should untangle later
+  handleNewTaskSubmit = (e, name, parent, callback) => {
+    this.addTask(e, name, parent)
+    this.enterPressWrap(e, callback)
+  }
+
+  // addTask should be more basic and not contain the enterPressWrap
   addTask = (e, name, parent) => {
     this.enterPressWrap(e, () => {      
       const id = this.state.newTaskId
@@ -60,7 +67,7 @@ class App extends Component {
 
   render() {
     const {state, 
-          addTask, 
+          handleNewTaskSubmit, 
           handleCheckboxClick, 
           handleSingleClickTask, 
           handleDoubleClickTask, 
@@ -79,7 +86,7 @@ class App extends Component {
           <div className="tasks-panel">
             <h2>{state.taskListName}</h2>
             <TaskListPanel>
-              <NewTaskInput handleEnterPress={addTask} parentId={1} />
+              <NewTaskInput handleEnterPress={handleNewTaskSubmit} parentId={1} />
               <TaskList handleClick={handleCheckboxClick} 
                         handleSingleClickTask={handleSingleClickTask} 
                         handleDoubleClickTask={handleDoubleClickTask} 
@@ -107,7 +114,7 @@ class App extends Component {
                 <TaskList handleClick={handleCheckboxClick} 
                           tasks={tasks} 
                           parentId={activeTaskId} />
-                <NewTaskInput handleEnterPress={addTask} 
+                <NewTaskInput handleEnterPress={handleNewTaskSubmit} 
                               parentId={activeTaskId} />
               </div>
               <textarea className="add-note" placeholder="Add a note..." defaultValue={activeTask.note} />
