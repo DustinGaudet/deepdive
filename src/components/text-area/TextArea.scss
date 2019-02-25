@@ -1,0 +1,17 @@
+.task-panel { 
+  textarea {
+    resize: none;
+    overflow: hidden;
+    border-bottom: 1px solid #f59692;
+    color: #f59692;
+    font-family: Helvetica;
+    font-size: 17px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: #f7f4f4;
+    &::placeholder {
+      color: #f59692;
+    }
+  }
+}

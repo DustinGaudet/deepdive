@@ -4,6 +4,7 @@ import './App.scss'
 import NewTaskInput from '../new-task-input/NewTaskInput'
 import TaskList from '../tasklist/TaskList'
 import TaskListPanel from '../tasklist-panel/TaskListPanel'
+import TextArea from '../text-area/TextArea'
 import dummyState from '../../dummyState.json'
 
 class App extends Component {
@@ -117,7 +118,7 @@ class App extends Component {
                 <NewTaskInput handleEnterPress={handleNewTaskSubmit} 
                               parentId={activeTaskId} />
               </div>
-              <textarea className="add-note" placeholder="Add a note..." defaultValue={activeTask.note} />
+              <TextArea className="add-note" placeholder="Add a note..." defaultValue={activeTask.note} />
             </div>
             <div><p><button onClick={closeTaskPanel}>></button> {taskCreatedCompleted + createCompleteDate}</p></div>
           </div>
