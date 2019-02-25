@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import 'react-contexify/dist/ReactContexify.min.css';
 // import logo from '../logo.svg'
 import './App.scss'
 import NewTaskInput from '../new-task-input/NewTaskInput'
