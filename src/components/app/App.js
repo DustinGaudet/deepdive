@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import 'react-contexify/dist/ReactContexify.min.css';
+import 'react-contexify/dist/ReactContexify.min.css'
 // import logo from '../logo.svg'
 import './App.scss'
 import NewTaskInput from '../new-task-input/NewTaskInput'
 import TaskList from '../tasklist/TaskList'
 import TaskListPanel from '../tasklist-panel/TaskListPanel'
-import TextArea from '../text-area/TextArea'
+import TaskPanel from '../task-panel/TaskPanel'
 import dummyState from '../../dummyState.json'
 
 class App extends Component {
@@ -36,6 +36,8 @@ class App extends Component {
       this.setState({newTaskId, tasks: [newTask].concat(this.state.tasks)})
     })
   }
+
+  deleteTask = (taskId) => this.setState((prevState) => ({tasks: prevState.tasks.filter(x => x.id !== taskId)}))
 
   updateTask = (id, newTask) => this.setState((prevState) => ({tasks: prevState.tasks.map((x) => x.id === id ? newTask : x)}) )
 
@@ -75,12 +77,26 @@ class App extends Component {
           handleDoubleClickTask, 
           closeTaskPanel, 
           updateTaskName, 
-          enterPressWrap} = this
+          enterPressWrap,
+          deleteTask} = this
     const {tasks, activeTaskId} = state
-    const activeTask = this.getTaskById(state.activeTaskId)
+    var taskPanel
+    if (activeTaskId) {
+      const activeTask = this.getTaskById(state.activeTaskId)
+      const taskCreatedCompleted = activeTask && activeTask.completed ? "Completed " : "Created "
+      const createCompleteDate = activeTask.completed ? activeTask.completedDateTime : activeTask.createdDate  
+      taskPanel = <TaskPanel {...{activeTask,
+                                  updateTaskName,
+                                  handleCheckboxClick,
+                                  tasks,
+                                  deleteTask,
+                                  handleNewTaskSubmit,
+                                  activeTaskId,
+                                  closeTaskPanel,
+                                  taskCreatedCompleted,
+                                  createCompleteDate}} />
+    }
     const detailsOpen = state.detailsOpen ? "details-open" : "details-closed"
-    const taskCreatedCompleted = activeTask.completed ? "Completed " : "Created "
-    const createCompleteDate = activeTask.completed ? activeTask.completedDateTime : activeTask.createdDate
 
     return (
       <div className="App">
@@ -90,39 +106,22 @@ class App extends Component {
             <TaskListPanel>
               <NewTaskInput handleEnterPress={handleNewTaskSubmit} parentId={1} />
               <TaskList handleClick={handleCheckboxClick} 
-                        handleSingleClickTask={handleSingleClickTask} 
-                        handleDoubleClickTask={handleDoubleClickTask} 
+                        {...{handleSingleClickTask, handleDoubleClickTask}} 
                         tasks={tasks} 
                         parentId={1} 
-                        completed={false} />
+                        completed={false} 
+                        deleteTask={deleteTask} />
               <button onClick={this.toggleCompletedList} >Show / Hide Completed tasks</button>
               <TaskList hidden={state.hideCompletedTasks} 
                         handleClick={handleCheckboxClick} 
-                        handleSingleClickTask={handleSingleClickTask} 
-                        handleDoubleClickTask={handleDoubleClickTask} 
+                        {...{handleSingleClickTask, handleDoubleClickTask}}
                         tasks={tasks} 
                         parentId={1} 
-                        completed={true} />
+                        completed={true} 
+                        deleteTask={deleteTask} />
             </TaskListPanel>
           </div>
-          <div className="task-panel">
-            <input value={activeTask.name} 
-                   onBlur={updateTaskName}
-                   onChange={updateTaskName}
-                   className="task-name checkbox" />
-            <div className="details">  
-              <input placeholder="Set due date" defaultValue={activeTask.due} />
-              <div className="container-subtask">
-                <TaskList handleClick={handleCheckboxClick} 
-                          tasks={tasks} 
-                          parentId={activeTaskId} />
-                <NewTaskInput handleEnterPress={handleNewTaskSubmit} 
-                              parentId={activeTaskId} />
-              </div>
-              <TextArea className="add-note" placeholder="Add a note..." defaultValue={activeTask.note} />
-            </div>
-            <div><p><button onClick={closeTaskPanel}>></button> {taskCreatedCompleted + createCompleteDate}</p></div>
-          </div>
+          {taskPanel}
         </div>
       </div>
     )
