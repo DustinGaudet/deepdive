@@ -3,10 +3,10 @@ import { Menu, Item, Separator, Submenu} from 'react-contexify'
 
 const onClick = ({ event, props }) => console.log(event,props);
 
-const TaskContextMenu = ({id}) => (
-  <Menu id={'menu_id_' + id}>
-     <Item onClick={onClick}>Lorem {id}</Item>
-     <Item onClick={onClick}>Ipsum</Item>
+const TaskContextMenu = ({task, deleteTask}) => (
+  <Menu id={'menu_id_' + task.id}>
+     <Item onClick={onClick}>Lorem {task.id}</Item>
+     <Item onClick={() => deleteTask(task.id)}>Delete</Item>
      <Separator />
      <Item disabled>Dolor</Item>
      <Separator />

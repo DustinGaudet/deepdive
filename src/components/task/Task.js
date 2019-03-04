@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import './Task.scss'
+import { contextMenu } from 'react-contexify'
+import TaskContextMenu from '../task-context-menu/TaskContextMenu'
 
 class Task extends Component {
   state = {
@@ -31,14 +33,27 @@ class Task extends Component {
     }
   }
 
+  handleContextMenu = (e, menuId) => {
+    e.preventDefault()
+    contextMenu.show({
+      id: "menu_id_" + menuId,
+      event: e,
+    });
+  }
+          
+
   render () {
-    const {task, handleClick} = this.props
+    const {task, handleClick, deleteTask} = this.props
     const completionState = this.props.task.completed ? 'completed' : 'incomplete'
     
     return (
-      <li className={'task ' + completionState} onClick={this.handleSingleOrDoubleClick}>
-        <span className={'checkbox ' + completionState} onClick={(e) => handleClick(e, task)}></span>{task.name}
-      </li>
+      <>
+        <li onContextMenu={(e) => this.handleContextMenu(e, task.id)} className={'task ' + completionState} onClick={this.handleSingleOrDoubleClick}>
+          <span className={'checkbox ' + completionState} onClick={(e) => handleClick(e, task)}></span>{task.name}
+        </li>
+        <TaskContextMenu task={task} 
+                        deleteTask={deleteTask} />
+      </>
     )
   }
 }
