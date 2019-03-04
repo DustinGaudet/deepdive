@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import 'react-contexify/dist/ReactContexify.min.css'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 // import logo from '../logo.svg'
 import './App.scss'
 import NewTaskInput from '../new-task-input/NewTaskInput'
@@ -128,4 +130,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default DragDropContext(HTML5Backend)(App)
