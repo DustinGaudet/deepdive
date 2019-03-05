@@ -33,7 +33,24 @@
     { "id": 10000028, "name": "be k good person", "parent": 10000012, "completed": false, "createdDate": "January 1st, 2019", "completedDateTime": ""},
     { "id": 10000029, "name": "be l good person", "parent": 10000013, "completed": false, "createdDate": "January 1st, 2019", "completedDateTime": ""},
     { "id": 10000030, "name": "be m good person", "parent": 10000014, "completed": false, "createdDate": "January 1st, 2019", "completedDateTime": ""},
-    { "id": 10000031, "name": "be n good person", "parent": 10000014, "completed": false, "createdDate": "January 1st, 2019", "completedDateTime": ""}
+    { "id": 10000031, "name": "be n good person", "parent": 10000014, "completed": false, "createdDate": "January 1st, 2019", "completedDateTime": ""} 
+  ],
+  "taskPositions": [
+    {"id": 1, "children": [10000000, 10000002, 10000004, 10000005, 10000006, 10000007, 10000008, 10000009, 10000011, 10000012, 10000013, 10000014]},
+    {"id": 10000000, "children": [10000015, 10000016, 10000017]},
+    {"id": 10000001, "children": [10000018]},
+    {"id": 10000002, "children": [10000019]},
+    {"id": 10000003, "children": [10000020]},
+    {"id": 10000004, "children": [10000021]},
+    {"id": 10000005, "children": [10000022]},
+    {"id": 10000007, "children": [10000023]},
+    {"id": 10000008, "children": [10000024]},
+    {"id": 10000009, "children": [10000025]},
+    {"id": 10000010, "children": [10000026]},
+    {"id": 10000011, "children": [10000027]},
+    {"id": 10000012, "children": [10000028]},
+    {"id": 10000013, "children": [10000029]},
+    {"id": 10000014, "children": [10000030, 10000031]}
   ],
   "activeTaskId": null,
   "hideCompletedTasks": true,
