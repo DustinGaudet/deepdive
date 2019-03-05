@@ -24,7 +24,8 @@ const TaskPanel = ({activeTask,
         <TaskList handleClick={handleCheckboxClick} 
                   tasks={tasks} 
                   parentId={activeTaskId} 
-                  deleteTask={deleteTask} />
+                  deleteTask={deleteTask} 
+                  id="subtasks"/>
         <NewTaskInput handleEnterPress={handleNewTaskSubmit} 
                       parentId={activeTaskId} />
       </div>

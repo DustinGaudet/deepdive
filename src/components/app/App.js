@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import 'react-contexify/dist/ReactContexify.min.css'
+import update from 'immutability-helper'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 // import logo from '../logo.svg'
@@ -38,6 +39,20 @@ class App extends Component {
       this.setState({newTaskId, tasks: [newTask].concat(this.state.tasks)})
     })
   }
+
+  moveTask = (dragIndex, hoverIndex) => {
+		const { tasks } = this.state;		
+		const dragTask = tasks[dragIndex];
+
+		this.setState(update(this.state, {
+			tasks: {
+				$splice: [
+					[dragIndex, 1],
+					[hoverIndex, 0, dragTask]
+				]
+			}
+		}));
+	}
 
   deleteTask = (taskId) => this.setState((prevState) => ({tasks: prevState.tasks.filter(x => x.id !== taskId)}))
 
@@ -80,7 +95,8 @@ class App extends Component {
           closeTaskPanel, 
           updateTaskName, 
           enterPressWrap,
-          deleteTask} = this
+          deleteTask,
+          moveTask} = this
     const {tasks, activeTaskId} = state
     var taskPanel
     if (activeTaskId) {
@@ -96,7 +112,8 @@ class App extends Component {
                                   activeTaskId,
                                   closeTaskPanel,
                                   taskCreatedCompleted,
-                                  createCompleteDate}} />
+                                  createCompleteDate,
+                                  moveTask}} />
     }
     const detailsOpen = state.detailsOpen ? "details-open" : "details-closed"
 
@@ -108,19 +125,25 @@ class App extends Component {
             <TaskListPanel>
               <NewTaskInput handleEnterPress={handleNewTaskSubmit} parentId={1} />
               <TaskList handleClick={handleCheckboxClick} 
-                        {...{handleSingleClickTask, handleDoubleClickTask}} 
-                        tasks={tasks} 
+                        {...{handleSingleClickTask, 
+                            handleDoubleClickTask,
+                            moveTask,
+                            deleteTask,
+                            tasks}} 
                         parentId={1} 
                         completed={false} 
-                        deleteTask={deleteTask} />
+                        id="incomplete-tasks"/>
               <button onClick={this.toggleCompletedList} >Show / Hide Completed tasks</button>
               <TaskList hidden={state.hideCompletedTasks} 
                         handleClick={handleCheckboxClick} 
-                        {...{handleSingleClickTask, handleDoubleClickTask}}
-                        tasks={tasks} 
+                        {...{handleSingleClickTask, 
+                            handleDoubleClickTask,
+                            tasks,
+                            moveTask,
+                            deleteTask}}
                         parentId={1} 
                         completed={true} 
-                        deleteTask={deleteTask} />
+                        id="completed-tasks" />
             </TaskListPanel>
           </div>
           {taskPanel}
