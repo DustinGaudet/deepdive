@@ -84,6 +84,12 @@ class App extends Component {
 
   getTaskById = id => this.state.tasks.filter(x => x.id === id)[0]
 
+  // filter tasks before passing to tasklist, instead of after
+  getCompletedTasksByParentId = id => this.state.tasks.filter(x => (x.parent === id && x.completed === true) )
+
+  // start using the taskPositions data to determine ordered child tasks for TaskList components
+  getOrderedTasksByParentId = id => this.state.taskPositions.filter(list => list.id === id)[0].children.map(id => this.state.tasks.filter(task => task.id === id)[0])
+
   toggleCompletedList = () => this.setState({hideCompletedTasks: !this.state.hideCompletedTasks})
 
   render() {
@@ -116,6 +122,8 @@ class App extends Component {
                                   moveTask}} />
     }
     const detailsOpen = state.detailsOpen ? "details-open" : "details-closed"
+    const completedTasks = this.getCompletedTasksByParentId(1)
+    const currentListTasks = this.getOrderedTasksByParentId(1)
 
     return (
       <div className="App">
@@ -128,8 +136,8 @@ class App extends Component {
                         {...{handleSingleClickTask, 
                             handleDoubleClickTask,
                             moveTask,
-                            deleteTask,
-                            tasks}} 
+                            deleteTask}} 
+                        tasks={currentListTasks}
                         parentId={1} 
                         completed={false} 
                         id="incomplete-tasks"/>
@@ -138,9 +146,9 @@ class App extends Component {
                         handleClick={handleCheckboxClick} 
                         {...{handleSingleClickTask, 
                             handleDoubleClickTask,
-                            tasks,
                             moveTask,
                             deleteTask}}
+                        tasks={completedTasks}
                         parentId={1} 
                         completed={true} 
                         id="completed-tasks" />
