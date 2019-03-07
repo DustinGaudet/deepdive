@@ -17,6 +17,14 @@ class App extends Component {
     this.state = dummyState
   }
 
+  compareCompletedDateTimes = (a, b) => {
+    console.log(a, b)
+    if (a.completedDateTime < b.completedDateTime) {
+      return -1
+    }
+    return (a.completedDateTime > b.completedDateTime) ? 1 : 0
+  }
+
   enterPressWrap = (e, callback) => {
     if (e.key === "Enter") {
       e.preventDefault()
@@ -68,7 +76,7 @@ class App extends Component {
 
   handleCheckboxClick = (e, task) => {
     e.preventDefault()
-    const completedDateTime = (!task.completed) ? new Date() : ''
+    const completedDateTime = (!task.completed) ? (new Date()).toString() : ''
     this.updateTask(task.id, {...task, completed: !task.completed, completedDateTime})
   }
 
@@ -87,10 +95,13 @@ class App extends Component {
   getTaskById = id => this.state.tasks.filter(x => x.id === id)[0]
 
   // filter tasks before passing to tasklist, instead of after
-  getCompletedTasksByParentId = id => this.state.tasks.filter(x => (x.parent === id && x.completed === true) )
+  getCompletedTasksByParentId = id => [...this.state.tasks.filter(x => (x.parent === id && x.completed === true))].sort(this.compareCompletedDateTimes)
 
   // start using the taskPositions data to determine ordered child tasks for TaskList components
-  getOrderedTasksByParentId = id => this.state.taskPositions.filter(list => list.id === id)[0].children.map(id => this.state.tasks.filter(task => task.id === id)[0])
+  getOrderedTasksByParentId = id => {
+    const taskPositionsList = this.state.taskPositions.filter(list => list.id === id)[0]
+    return (taskPositionsList) ? taskPositionsList.children.map(id => this.state.tasks.filter(task => task.id === id)[0]) : []
+  }
 
   toggleCompletedList = () => this.setState({hideCompletedTasks: !this.state.hideCompletedTasks})
 
