@@ -5,29 +5,9 @@ import {ItemTypes} from '../../Constants'
 import {DropTarget} from 'react-dnd'
 
 class TaskList extends Component {
-  render(){
-    const {parentId, 
-          completed, 
-          hidden, 
-          handleClick, 
-          handleSingleClickTask, 
-          handleDoubleClickTask, 
-          deleteTask, 
-          id, 
-          moveTask} = this.props
-    // const {moveTask} = this
-    let tasks = this.props.tasks.filter(x => x.parent === parentId)
-    let hiddenClass = ''
-  
-    if (typeof completed !== 'undefined') {
-      tasks = tasks.filter(x => x.completed === completed)
-    } 
-  
-    if (typeof hidden !== 'undefined') {
-      hiddenClass = hidden ? 'hidden' : ''
-    }
-  
-    tasks = tasks.map((task, i) => { 
+
+  renderTasks = ({handleClick, handleSingleClickTask, handleDoubleClickTask, deleteTask, id, moveTask, tasks}) => {
+    return tasks.map((task, i) => { 
       return (
         <Task key={task.id} 
               index={i}
@@ -40,10 +20,18 @@ class TaskList extends Component {
                 deleteTask}} />
       )
     })
+  }
+
+  render(){
+    let hiddenClass = ''
+  
+    if (typeof this.props.hidden !== 'undefined') {
+      hiddenClass = this.props.hidden ? 'hidden' : ''
+    }
     
     return this.props.connectDropTarget(
       <ol className={'task-list ' + hiddenClass}>
-        { tasks }
+        { this.renderTasks(this.props) }
       </ol>
     )
   }
