@@ -138,7 +138,7 @@ const taskTarget = {
 
 		// Time to actually perform the action
 		if ( props.listId === sourceListId ) {
-			props.moveTask(dragIndex, hoverIndex)
+			props.moveTask(dragIndex, hoverIndex, props.shouldReorder)
 
 			// Note: we're mutating the monitor item here!
 			// Generally it's better to avoid mutations,

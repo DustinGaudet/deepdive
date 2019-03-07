@@ -40,18 +40,20 @@ class App extends Component {
     })
   }
 
-  moveTask = (dragIndex, hoverIndex) => {
-		const { tasks } = this.state;		
-		const dragTask = tasks[dragIndex];
+  moveTask = (dragIndex, hoverIndex, shouldReorder) => {
+    if (shouldReorder) {
+      const { tasks } = this.state;		
+      const dragTask = tasks[dragIndex];
 
-		this.setState(update(this.state, {
-			tasks: {
-				$splice: [
-					[dragIndex, 1],
-					[hoverIndex, 0, dragTask]
-				]
-			}
-		}));
+      this.setState(update(this.state, {
+        tasks: {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, dragTask]
+          ]
+        }
+      }));
+    }
 	}
 
   deleteTask = (taskId) => this.setState((prevState) => ({tasks: prevState.tasks.filter(x => x.id !== taskId)}))
@@ -109,10 +111,11 @@ class App extends Component {
       const activeTask = this.getTaskById(state.activeTaskId)
       const taskCreatedCompleted = activeTask && activeTask.completed ? "Completed " : "Created "
       const createCompleteDate = activeTask.completed ? activeTask.completedDateTime : activeTask.createdDate  
-      taskPanel = <TaskPanel {...{activeTask,
+      const subtasks = this.getOrderedTasksByParentId(activeTaskId)
+      taskPanel = <TaskPanel tasks={subtasks}
+                              {...{activeTask,
                                   updateTaskName,
                                   handleCheckboxClick,
-                                  tasks,
                                   deleteTask,
                                   handleNewTaskSubmit,
                                   activeTaskId,
@@ -137,6 +140,7 @@ class App extends Component {
                             handleDoubleClickTask,
                             moveTask,
                             deleteTask}} 
+                        shouldReorder={true}
                         tasks={currentListTasks}
                         parentId={1} 
                         completed={false} 
@@ -148,6 +152,7 @@ class App extends Component {
                             handleDoubleClickTask,
                             moveTask,
                             deleteTask}}
+                        shouldReorder={false}
                         tasks={completedTasks}
                         parentId={1} 
                         completed={true} 

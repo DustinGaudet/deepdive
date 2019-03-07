@@ -6,7 +6,7 @@ import {DropTarget} from 'react-dnd'
 
 class TaskList extends Component {
 
-  renderTasks = ({handleClick, handleSingleClickTask, handleDoubleClickTask, deleteTask, id, moveTask, tasks}) => {
+  renderTasks = ({handleClick, handleSingleClickTask, handleDoubleClickTask, deleteTask, id, moveTask, tasks, shouldReorder}) => {
     return tasks.map((task, i) => { 
       return (
         <Task key={task.id} 

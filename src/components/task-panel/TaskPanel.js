@@ -7,12 +7,14 @@ const TaskPanel = ({activeTask,
                     updateTaskName, 
                     handleCheckboxClick, 
                     tasks, 
-                    deleteTask, 
+                    deleteTask,
+                    moveTask,
                     handleNewTaskSubmit, 
                     activeTaskId, 
                     closeTaskPanel, 
                     taskCreatedCompleted, 
-                    createCompleteDate}) => (
+                    createCompleteDate,
+                    shouldReorder}) => (
   <div className="task-panel">
     <input value={activeTask.name} 
           onBlur={updateTaskName}
@@ -22,10 +24,12 @@ const TaskPanel = ({activeTask,
       <input placeholder="Set due date" defaultValue={activeTask.due} />
       <div className="container-subtask">
         <TaskList handleClick={handleCheckboxClick} 
-                  tasks={tasks} 
                   parentId={activeTaskId} 
-                  deleteTask={deleteTask} 
-                  id="subtasks"/>
+                  id="subtasks"
+                  shouldReorder={true}
+                  {...{tasks,
+                       deleteTask,
+                       moveTask}}/>
         <NewTaskInput handleEnterPress={handleNewTaskSubmit} 
                       parentId={activeTaskId} />
       </div>
